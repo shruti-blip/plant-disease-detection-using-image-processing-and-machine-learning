@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropGuard - Plant Health Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: url('Image2.jpg') no-repeat center center/cover, 
+                        linear-gradient(to right, rgba(76, 175, 80, 0.8), rgba(46, 139, 87, 0.8));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+        }
+        /* Loader styles */
+        .loader-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #2E8B57;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* Hide loader after animation */
+        .hidden {
+            display: none;
+        }
+        /* Intro content */
+        .intro-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            animation: popUp 1.2s ease-in-out;
+        }
+        .app-name {
+            font-size: 26px;
+            font-weight: 600;
+            color: #2E8B57;
+        }
+        .tagline {
+            font-size: 16px;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .start-btn {
+            background: #2E8B57;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .start-btn:hover {
+            background: #1C6B44;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popUp {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader-container" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Intro Page -->
+    <div class="intro-container hidden" id="introPage">
+        <div class="logo-container">
+            <img src="logo.png" alt="App Logo" class="logo">
+        </div>
+        <h1 class="app-name">CropGuard</h1>
+        <p class="tagline">Detect & Classify Plant Diseases with AI</p>
+        <a href = "home2.html">
+        <button class="start-btn" onclick="goToMainPage()">Get Started</button></a>
+    </div>
+
+    <script>
+        // Show loading animation and then display intro page
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById("loader").classList.add("hidden");
+                document.getElementById("introPage").classList.remove("hidden");
+            }, 2000); // Loading animation lasts for 2 seconds
+        };
+
+        function goToMainPage() {
+            window.location.href = "main.html"; // Redirects to the next page
+        }
+    </script>
+</body>
+</html>
+
+

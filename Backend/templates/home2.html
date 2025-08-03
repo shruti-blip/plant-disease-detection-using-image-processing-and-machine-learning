@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropGuard - Plant Health Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: url('{% static "images/leaf_project.jpeg" %}') no-repeat center center/cover;          
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(46, 139, 87, 0.9);
+            padding: 15px 30px;
+            color: white;
+        }
+        .app-name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+        .nav-links li {
+            margin: 0 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: #c3e6cb;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            text-align: center;
+            color: white;
+        }
+        .welcome-box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .welcome-box h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .welcome-box p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .cta-btn {
+            background: #2E8B57;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cta-btn:hover {
+            background: #1C6B44;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 🔹 Navigation Bar -->
+    <nav class="navbar">
+        <div class="app-name">CropGuard</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'code_2' %}">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}?next={% url 'home2' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Signup</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    <!-- 🔹 Main Content -->
+    <div class="container">
+        <div class="welcome-box">
+            <h1>Welcome to CropGuard</h1>
+            <p>Protect your plants with AI-powered disease detection.</p>
+            <form id="detection-form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Plant Selection Dropdown -->
+                <label for="plant_type">Select a Plant:</label>
+                <select id="plant_type">
+                    <option value="">-- Select a Plant --</option>
+                    <option value="apple">Apple</option>
+                    <option value="tomato">Tomato</option>
+                    <option value="grape">Grape</option>
+                    <option value="potato">Potato</option>
+                    <option value="strawberry">Strawberry</option>
+                    <option value="cherry">Cherry</option>
+                    <option value="corn">Corn</option>
+                    <option value="bell_pepper">Bell Pepper</option>
+                    <option value="peach">Peach</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="rice">Rice</option>
+                </select>
+                <br><br>
+
+                <!-- Store Django URL inside a data attribute -->
+                <button type="button" class="cta-btn" id="scan-btn"
+                    data-login-url="{% url 'login' %}"
+                    data-detection-url="{% url 'detection' %}">
+                    Scan a Leaf
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- ✅ JavaScript -->
+    <script>
+   document.getElementById("scan-btn").addEventListener("click", function(event) {
+    event.preventDefault();  // ✅ Prevent default form submission
+
+    let selectedPlant = document.getElementById("plant_type").value;
+    let loginURL = this.getAttribute("data-login-url");
+    let detectionPage = this.getAttribute("data-detection-url"); // Change to detection.html path
+
+    let isAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
+
+    if (!isAuthenticated) {
+        alert("Please log in to scan a leaf.");
+        window.location.href = loginURL;
+        return;
+    }
+
+    if (!selectedPlant) {
+        alert("Please select a plant before scanning!");
+        return;
+    }
+
+    // ✅ Store selected plant in localStorage and go to detection.html
+    localStorage.setItem("selectedPlant", selectedPlant);
+    window.location.href = detectionPage;
+});
+
+    </script>
+    
+</body>
+</html>
+
